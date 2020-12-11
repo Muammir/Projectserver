@@ -1,10 +1,11 @@
 #include<stdio.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>	//inet_addr
+#include<time.h>
 
 int main(int argc , char *argv[])
 {
-	int socket_desc , new_socket , c;
+	int socket_desc , new_socket , c, n_client;
 	struct sockaddr_in server , client;
 	char msg[2000], buffer[2000];
 	
@@ -49,6 +50,12 @@ int main(int argc , char *argv[])
 	printf("Server : "); 
 	fgets(buffer, 2000, stdin);
 	send(new_socket, buffer, 2000, 0);
+//
+	n_client++;
+	time_t currentTime;
+	time(&currentTime);
+	printf("Client %d requested for time at %s", n_client, ctime(&currentTime));
+	send(new_socket, ctime(&currentTime), 30, 0);
 	}
 
 	if(new_socket < 0)

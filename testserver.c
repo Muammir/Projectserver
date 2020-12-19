@@ -8,7 +8,7 @@ int main(int argc , char *argv[])
 {
 	int socket_desc , new_socket , c, n_client;
 	struct sockaddr_in server , client;
-	char msg[2000], buffer[2000], Answer;
+	char msg[2000], buffer[2000], response[30];
 	
 	//Create socket
 	socket_desc = socket(AF_INET , SOCK_STREAM , 0);
@@ -39,18 +39,20 @@ int main(int argc , char *argv[])
 	(new_socket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c)){
 
 	recv(new_socket, msg, 2000, 0);
-	printf("Client : %s\n",msg);
+	printf("Client : %s",msg);
 
 	n_client++;
         time_t currentTime;
         time(&currentTime);
-        printf("Client %d requested for time at %s", n_client, ctime(&currentTime));
+        printf("Client %d Sent by %s", n_client, ctime(&currentTime));
         send(new_socket, ctime(&currentTime), 30, 0);
 
 	printf("Server : "); 
 	fgets(buffer, 2000, stdin);
 	send(new_socket, buffer, 2000, 0);
 
+	recv(new_socket, response, 29, 0);
+	printf("received by: %s", response);
 	}
 
 	if(new_socket < 0)
